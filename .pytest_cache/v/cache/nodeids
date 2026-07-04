@@ -1,0 +1,9 @@
+[
+  "tests/test_matcher.py::test_normalize_name_handles_taxonomic_qualifiers",
+  "tests/test_matcher.py::test_panel_matcher_exact_reported_name",
+  "tests/test_matcher.py::test_panel_matcher_uses_fuzzy_fallback",
+  "tests/test_matcher.py::test_taxonomy_resolver_resolves_taxid_via_provider",
+  "tests/test_utils.py::test_extract_genus_returns_first_token",
+  "tests/test_utils.py::test_fuzzy_match_returns_close_candidate",
+  "tests/test_utils.py::test_normalize_name_strips_punctuation"
+]

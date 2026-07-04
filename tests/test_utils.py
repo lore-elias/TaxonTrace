@@ -1,5 +1,5 @@
-from src.matcher import fuzzy_match
-from src.normalization import extract_genus, normalize_name
+from taxonomy_resolver.matcher import fuzzy_match
+from taxonomy_resolver.normalization import extract_genus, normalize_name
 
 
 def test_normalize_name_strips_punctuation():

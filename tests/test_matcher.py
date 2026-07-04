@@ -1,7 +1,7 @@
-from src.models import MatchConfidence, TaxonRecord
-from src.matcher import PanelMatcher
-from src.extract import TaxonomyResolver
-from src.normalization import normalize_name
+from taxonomy_resolver.models import MatchConfidence, TaxonRecord
+from taxonomy_resolver.matcher import PanelMatcher
+from taxonomy_resolver.extract import TaxonomyResolver
+from taxonomy_resolver import normalize_name
 
 
 class FakeProvider:
