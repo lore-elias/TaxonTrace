@@ -1,0 +1,17 @@
+README.md
+pyproject.toml
+src/taxonomy_resolver/__init__.py
+src/taxonomy_resolver/cache.py
+src/taxonomy_resolver/extract.py
+src/taxonomy_resolver/lineage.py
+src/taxonomy_resolver/matcher.py
+src/taxonomy_resolver/models.py
+src/taxonomy_resolver/normalization.py
+src/taxonomy_resolver/providers.py
+src/taxonomy_resolver.egg-info/PKG-INFO
+src/taxonomy_resolver.egg-info/SOURCES.txt
+src/taxonomy_resolver.egg-info/dependency_links.txt
+src/taxonomy_resolver.egg-info/requires.txt
+src/taxonomy_resolver.egg-info/top_level.txt
+tests/test_matcher.py
+tests/test_utils.py

@@ -1,0 +1,46 @@
+{
+  "taxa": {
+    "562": {
+      "cached_at": "",
+      "historical_names": [
+        "Bacillus coli"
+      ],
+      "lineage": [
+        {
+          "name": "Bacteria",
+          "rank": "superkingdom",
+          "taxid": "2"
+        },
+        {
+          "name": "Proteobacteria",
+          "rank": "phylum",
+          "taxid": "1224"
+        },
+        {
+          "name": "Enterobacterales",
+          "rank": "order",
+          "taxid": "543"
+        },
+        {
+          "name": "Escherichia",
+          "rank": "genus",
+          "taxid": "561"
+        },
+        {
+          "name": "Escherichia coli",
+          "rank": "species",
+          "taxid": "562"
+        }
+      ],
+      "metadata": {},
+      "name": "Escherichia coli",
+      "provider": null,
+      "rank": "species",
+      "synonyms": [
+        "Bacterium coli"
+      ],
+      "taxid": "562"
+    }
+  },
+  "version": "1.0"
+}

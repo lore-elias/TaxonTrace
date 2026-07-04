@@ -1,0 +1,44 @@
+Metadata-Version: 2.4
+Name: taxonomy-resolver
+Version: 0.2.0
+Summary: A modular taxonomy resolution package for taxon fetching, normalization, and matching.
+Author: Leonor Elias
+License: MIT
+Keywords: taxonomy,bioinformatics,ncbi,gtdb,match
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: biopython>=1.86
+Requires-Dist: rapidfuzz>=3.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+
+# Taxonomy Resolver Package
+
+This package provides a modular taxonomy resolution layer for bioinformatics workflows. It is designed to be publishable on PyPI and flexible enough to support multiple backends in the future.
+
+## Architectural changes
+
+- A provider abstraction now separates taxonomy retrieval from the rest of the package, making it straightforward to swap in GTDB, ICTV, or other providers later.
+- The main public entry point is TaxonomyResolver, which coordinates provider access, caching, normalization, and matching.
+- Biological normalization is isolated from generic string matching so taxonomic names can be normalized independently from the fuzzy matching logic.
+- The old custom Levenshtein implementation has been replaced by rapidfuzz when available, with a small fallback implementation kept for minimal environments.
+- Caching now supports versioning and optional expiration, and records include synonyms and historical names.
+- TaxonRecord exposes helper methods for lineage inspection and rank-based lookups.
+
+## Usage
+
+```python
+from taxonomy_resolver import PanelMatcher, TaxonomyResolver
+
+resolver = TaxonomyResolver()
+record = resolver.resolve_taxid("562")
+matcher = PanelMatcher(reported_names={"escherichia coli"})
+result = matcher.match_name("Escherichia coli", taxon=record)
+```
+
+## Development
+
+```bash
+pytest -q
+```

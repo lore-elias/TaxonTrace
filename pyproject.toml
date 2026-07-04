@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taxonomy-resolver"
+version = "0.2.0"
+description = "A modular taxonomy resolution package for taxon fetching, normalization, and matching."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name = "Leonor Elias"}]
+license = {text = "MIT"}
+keywords = ["taxonomy", "bioinformatics", "ncbi", "gtdb", "match"]
+dependencies = [
+  "biopython>=1.86",
+  "rapidfuzz>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-cov>=4.0.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
