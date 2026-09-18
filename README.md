@@ -1,4 +1,4 @@
-# Taxonomy Resolver
+# TaxonTrace
 
 A lightweight Python toolkit for resolving taxonomic names and identifiers across heterogeneous metadata sources. The package is designed for bioinformatics workflows that require consistent taxonomic normalization, lineage retrieval, and fuzzy name matching.
 
