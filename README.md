@@ -1,51 +1,47 @@
-# Taxonomy Resolver Package
+# Taxonomy Resolver
 
-A lightweight Python package for resolving taxonomic names and identifiers, with support for fuzzy matching, synonyms, and historical names. It is designed to be extensible to different taxonomy providers.
+A lightweight Python toolkit for resolving taxonomic names and identifiers across heterogeneous metadata sources. The package is designed for bioinformatics workflows that require consistent taxonomic normalization, lineage retrieval, and fuzzy name matching.
 
-The package is designed for bioinformatics workflows that requeire consistent taxonomic handling whilke remaining exdtensible through a provider-based architecture.
+## Why this package exists
+
+Taxonomic metadata are often inconsistent across sequence repositories: organism names may vary in spelling, abbreviations may differ, and ranks may be reported with inconsistent terminology. This package provides a simple abstraction for resolving such metadata into a normalized representation that can be used downstream in pathogen identification, reference annotation, and taxonomic comparison workflows.
 
 ## Features
 
-- 🔬 Resolve NCBI Taxonomy IDs into structured taxonomy records
-- 🌳 Retrieve complete taxonomic lineages
-- 💾 Local JSON caching with optional expiration and versioning
-- 🧬 Normalize scientific names for consistent comparisons
-- 🔎 Fuzzy matching using `rapidfuzz` (with a lightweight fallback)
-- 📚 Support for synonyms and historical taxonomic names
-- 🔌 Provider abstraction for future support of databases such as GTDB and ICTV
+- Resolve NCBI Taxonomy identifiers into structured taxonomy records
+- Retrieve taxonomic lineage information for a given taxid
+- Normalize taxonomic names for consistent comparison
+- Match reported names against a known reference panel
+- Use fuzzy matching when exact matches are unavailable
+- Persist cached taxonomy results locally in JSON format
+- Provide a provider-based architecture for future taxonomy sources
 
 ---
 
-## Usage
+## Installation
 
 ```bash
 pip install taxonomy-resolver
 ```
 
-For development:
+For local development:
 
 ```bash
-git clone https://github.com/lore-elias/Taxonomy-Resolver.git
-cd taxonomy-resolver
+git clone https://github.com/lore-elias/taxonomy_resolver.git
+cd taxonomy_resolver
 pip install -e ".[dev]"
 ```
 
 ---
 
-## Quick Start
+## Quick start
 
-### Resolve a Taxonomy ID
+### Resolve a taxid
 
 ```python
-from taxonomy_resolver import (
-    TaxonomyResolver,
-    NCBITaxonomyProvider,
-)
+from taxonomy_resolver import TaxonomyResolver, NCBITaxonomyProvider
 
-provider = NCBITaxonomyProvider(
-    email="your.email@example.com",
-)
-
+provider = NCBITaxonomyProvider(email="your.email@example.com")
 resolver = TaxonomyResolver(provider=provider)
 
 record = resolver.resolve_taxid("562")
@@ -55,9 +51,7 @@ print(record.rank)
 print(record.lineage)
 ```
 
----
-
-### Match organism names
+### Match a reported organism name
 
 ```python
 from taxonomy_resolver import PanelMatcher
@@ -70,105 +64,79 @@ matcher = PanelMatcher(
 )
 
 result = matcher.match_name("Escherichia colli")
-
 print(result.confidence)
+print(result.matched_name)
 ```
 
----
-
-### Normalize names
+### Normalize a name
 
 ```python
 from taxonomy_resolver import normalize_name
 
 normalize_name("Escherichia coli (strain K12)")
-# escherichia coli strain k12
+# 'escherichia coli strain k12'
 ```
 
 ---
 
-## Main Components
+## Package structure
 
-### TaxonomyResolver
+```text
+taxonomy_resolver/
+├── __init__.py
+├── cache.py
+├── extract.py
+├── lineage.py
+├── matcher.py
+├── models.py
+├── normalization.py
+├── providers.py
+└── ...
+```
 
-High-level interface for taxonomy resolution.
+### Core components
 
-Responsibilities include:
+#### TaxonomyResolver
+High-level entry point for resolving taxids and matching names.
 
-- resolving TaxIDs
-- coordinating taxonomy providers
-- integrating lineage fetching and matching
+#### NCBITaxonomyProvider
+NCBI-backed provider using Biopython Entrez to fetch taxonomy records.
 
----
+#### TaxonomyLineageFetcher
+Fetches and caches taxonomy records through the selected provider.
 
-### NCBITaxonomyProvider
+#### PanelMatcher
+Matches reported names against a reference panel using exact, genus-based, and fuzzy matching logic.
 
-Retrieves taxonomy records using BioPython's Entrez interface.
-
-Currently supported:
-
-- Scientific name
-- Rank
-- Complete lineage
-- Synonyms
-- Historical names
-
----
-
-### PanelMatcher
-
-Matches organism names against a user-defined reference panel using:
-
-- exact matching
-- TaxID-based matching
-- genus fallback
-- fuzzy matching
-
----
-
-### TaxonRecord
-
-Represents a resolved taxonomy record.
-
-Includes:
-
-- TaxID
-- scientific name
-- rank
-- lineage
-- synonyms
-- historical names
-- provider metadata
+#### TaxonRecord
+Normalized representation of a resolved taxon with taxid, scientific name, rank, lineage, and metadata.
 
 ---
 
 ## Architecture
 
-```
-                TaxonomyResolver
-                        │
-        ┌───────────────┴───────────────┐
-        │                               │
- TaxonomyLineageFetcher           PanelMatcher
-        │
- TaxonomyProvider
-        │
- NCBITaxonomyProvider
-        │
-     NCBI Entrez
+```text
+TaxonomyResolver
+    ├── TaxonomyLineageFetcher
+    │   └── TaxonomyProvider
+    │       └── NCBITaxonomyProvider
+    │           └── NCBI Entrez
+    └── PanelMatcher
 ```
 
-The provider abstraction allows future implementations for additional taxonomy databases without changing the public API.
+The design intentionally separates taxonomy retrieval, normalization, and matching so that new providers can be added without changing the public API.
 
 ---
 
-## Running Tests
+## Development
+
+Run the tests:
 
 ```bash
 pytest
 ```
 
-or
+Or collect coverage:
 
 ```bash
 pytest --cov=src
@@ -180,24 +148,20 @@ pytest --cov=src
 
 Planned improvements include:
 
-- GTDB provider
-- ICTV provider
-- Batch TaxID resolution
-- Search by scientific name
-- Configurable normalization rules
-- Additional cache backends
-- Command-line interface
+- additional taxonomy providers such as GTDB and ICTV
+- batch resolution of multiple taxids
+- improved normalization rules for strain and cultivar names
+- CLI support for command-line use
+- extended cache strategies and persistence options
 
 ---
 
 ## Contributing
 
-Contributions are welcome.
-
-If you encounter a bug or have a feature request, please open an issue or submit a pull request.
+Contributions are welcome. If you find a bug or want to propose an enhancement, please open an issue or submit a pull request.
 
 ---
 
 ## License
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+This project is licensed under the MIT License.
